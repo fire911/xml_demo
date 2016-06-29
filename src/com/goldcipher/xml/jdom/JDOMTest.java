@@ -2,16 +2,21 @@ package com.goldcipher.xml.jdom;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom2.Attribute;
+import org.jdom2.CDATA;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.EscapeStrategy;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import com.goldcipher.entity.Book;
 
@@ -22,8 +27,12 @@ import com.goldcipher.entity.Book;
  */
 public class JDOMTest {
 	
-
-	public static void main(String[] args) throws JDOMException, IOException {
+	/**
+	 * JDOM方式解析XML
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
+	public  void parseXML() throws JDOMException, IOException {
 		//创建SAXBuilder对象
 		SAXBuilder builder=new SAXBuilder();
 		//创建InputStream
@@ -76,5 +85,27 @@ public class JDOMTest {
 		}
 		in.close();
 	}
-
+	/**
+	 * JDOM方式创建XML
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public void createXML() throws FileNotFoundException, IOException{
+		//创建Element对象
+		Element rss=new Element("rss");
+		rss.setAttribute("version", "2.0");
+		//创建Document对象
+		Document document=new Document(rss);
+		Element channle=new Element("channle");
+		rss.addContent(channle);
+		Element title=new Element("title");
+//		CDATA cdata=new CDATA("JDOM创建RSS");
+//		title.addContent(cdata);
+		title.setText("<!CDATA[[JDOM创建RSS]]>");
+		channle.addContent(title);
+		Format format=Format.getPrettyFormat();
+		XMLOutputter xo=new XMLOutputter(format);
+		xo.output(document, new FileOutputStream("jdom_demo.xml"));
+		
+	}
 }

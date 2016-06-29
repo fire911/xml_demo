@@ -1,6 +1,6 @@
 package com.goldcipher.entity;
 
-public class Book {
+public class Book{
 	
 	private String id;
 
